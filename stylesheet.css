@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+
+body {
+    font-family: "Roboto Mono", monospace;
+    margin: auto 0px;
+    padding: 0px;
+}
+
+
+.calCont {
+    margin: 0px auto;
+    max-width: 500px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.butCont {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* gap: 20px; */
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.3px solid black;
+}
+
+button {
+    font-family: "Roboto Mono", monospace;
+    font-weight: 350;
+    font-size: 17px;
+    width: 80px;
+    height: 80px;
+    border-radius: 0px;
+    border: none;
+    background-color: white;
+}
+
+.display {
+    display: flex;
+    width: 500px;
+    max-width: 500px;
+    height: 50px;
+    justify-content:center;
+    align-items: center;
+    /* padding-right: 20px; */
+    text-align: center;
+    margin: 0px;
+    font-size: 17px;
+    color: white;
+    background-color: black;
+    /* border-bottom: 0.3px solid black; */
+}
+

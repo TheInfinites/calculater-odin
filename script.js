@@ -417,11 +417,13 @@ function settingThings () {
                 shouldOverwrite = true;          
                 break;
 
-            case ("=" && "Enter"):
+            case ("="):
                 setOperation();
+                break;
 
             case "Backspace":
                 backSpace();
+                break;
         }
     })
 
