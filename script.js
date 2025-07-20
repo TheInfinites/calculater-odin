@@ -24,10 +24,11 @@ let second;
 let shouldOverwrite = false;
 
 // query selectors
-const getNum = document.querySelector(".row");
+const getNum = document.querySelectorAll(".row");
 const display = document.querySelector(".display");
-const btn = document.querySelector(".ops");
+const eql = document.querySelector("#equal");
 const clearBtn = document.querySelector("#clear");
+const backSpcae = document.querySelector("#backspace");
 
 
 let test;
@@ -41,7 +42,17 @@ function operator (a, op, b) {
         case "-":
             test = subtract(a, b);
             break;
+        case "x":
+            test = muliply(a, b);
+            break;
+        case "/":
+            test = divide(a, b);
+            break
     }
+
+    // rounding upto 2 decimal places
+    test = Math.round(test * 100) / 100;
+
     console.log(test);
     return test;
 }
@@ -56,15 +67,22 @@ let nextTextB = '';
 let nextText = '';
 let getText = '';
 
+let decA = false;
+let decB = false;
+
+
 let numberA;
 let numberB;
-
 
 // gettng the numbers
 function setA (any) {
 
     nextTextA = String(getTextA) + String(any);
     getTextA = nextTextA;
+
+    // if(dec){
+    //     nextTextA = nextTextA
+    // }
 
     numberA = Number(nextTextA);    
     return numberA;
@@ -81,6 +99,65 @@ function setB (any) {
 
 }
 
+
+function accumulate () {
+    if(op && numberA && numberB){
+        operator(numberA, op, numberB);
+        numberA = test;
+        test = ''
+        numberB = ''
+        getTextB = ''
+        nextTextB = ''
+        console.log("acitvated!")
+        decA = false;
+        decB = false;
+    }
+}
+
+
+function setNum (anything){
+    if(!op){
+        if(shouldOverwrite){
+            getText = '';
+            shouldOverwrite = false;
+        }
+        first = Number(anything);
+        
+        // the decimial setup
+        if (anything == "." && decA){
+            first = '';
+        }
+        
+        if (anything == "." && !decA){
+            first = String(anything);
+            decA = true;
+        }
+
+        setA(first);
+        setDisplay(first);
+        
+    } else{
+
+        second = Number(anything);
+
+        // the decimial setup
+        if (anything == "." && decB){
+            second = '';
+        }
+        
+        if (anything == "." && !decB){
+            second = String(anything);
+            decB = true;
+        }
+
+        setB(second);
+        setDisplay(second);
+    }
+    console.log(nextTextA);
+    console.log(nextTextB);
+        // break;
+}
+
 // -- the display text function
 function setDisplay (a) {
 
@@ -90,206 +167,272 @@ function setDisplay (a) {
     return display.textContent = `${nextText}`;
 }
 
-
-function settingThings () {
-
-    getNum.addEventListener("mouseup", (e) => {
-        let target = e.target;
-        switch (target.id) {
-            case "1":
-                if(!op){
-                    if(shouldOverwrite){
-                        getText = '';
-                        shouldOverwrite = false;
-                    }
-                    first = 1;
-                    setA(first);
-                    setDisplay(first);
-                } else{
-                    second = 1;
-                    setB(second);
-                    setDisplay(second);
-                }
-                console.log(nextTextA);
-                console.log(nextTextB);
-                break;
+// -- the operation function
+function setOperation () {
+    operator(numberA, op, numberB);
+    display.textContent = `${test}`;
+    // getText = test;
+    // numberA = test;
+    // getTextB = '';
     
-            case "2":
-                if(!op){
-                    if(shouldOverwrite){
-                        getText = '';
-                        shouldOverwrite = false;
-                    }
-                    first = 2;
-                    setA(first);
-                    setDisplay(first);
-                } else{
-                    second = 2;
-                    setB(second);
-                    setDisplay(second);
-                }
-                console.log(nextTextA);
-                console.log(nextTextB);
-                break;
-                
-            case "3":
-                if(!op){
-                    if(shouldOverwrite){
-                        getText = '';
-                        shouldOverwrite = false;
-                    }
-                    first = 3;
-                    setA(first);
-                    setDisplay(first);
-                } else{
-                    second = 3;
-                    setB(second);
-                    setDisplay(second);
-                }
-                console.log(nextTextA);
-                console.log(nextTextB);
-                break;
+    numberA = test;
+    getTextA = '';
     
-            case "op-plus":
-                op = "+";
-                setDisplay(op);
-                shouldOverwrite = true;
-                break;
-            case "op-minus":
-                op = "-";
-                setDisplay(op);  
-                shouldOverwrite = true;          
-                break;
-        }
-            
+    op = ''
+    getText = test;
+    nextText = ''
     
-    })
+    numberB = ''
+    getTextB = ''
+    nextTextB = ''
 
-    getNum.addEventListener("click", (e) => {
-        let target = e.target;
-        
+    decA = false;
+    decB = false;
+    // test = ''
 
-        if(target.id == "equal"){        
-            operator(numberA, op, numberB);
-            display.textContent = `${test}`;
-            // getText = test;
-            // numberA = test;
-            // getTextB = '';
-            
-            numberA = test;
-            getTextA = '';
-            
-            op = ''
-            getText = test;
-            nextText = ''
-            
-            numberB = ''
-            getTextB = ''
-            nextTextB = ''
+    shouldOverwrite = true;
+}
 
-            shouldOverwrite = true;
-        };
-        
-    })
-    
-    clearBtn.addEventListener("click", () => {
+// -- clear function
+function clear () {
         numberA = '';
         getTextA = '';
         
         op = ''
         getText = '';
         nextText = '';
-        display.textContent = '.';
+        display.textContent = '0';
         
         numberB = ''
         getTextB = ''
         nextTextB = ''
+        test = '';
     
         shouldOverwrite = true;
+}
 
+// -- the backspace function
+function backSpace () {
+    if(test){
+        clear();
+    } else if (nextText && numberB){
+        nextText = nextText.slice(0, -1);
+        getText = '';
+        setDisplay(nextText);
+
+        numberB = numberB.toString().slice(0, -1);
+        numberB = Number(numberB);
+        nextTextB = '';
+        getTextB = '';
+        setB(numberB);
+    } else if (nextText && op){
+        nextText = nextText.slice(0, -1);
+        getText = '';
+        setDisplay(nextText);
+        // op = op.slice(0,-1);
+        op = ''
+    } else if (nextText && numberA){
+        nextText = nextText.slice(0, -1);
+        getText = '';
+        if(!nextText){
+            nextText = '0';
+        }
+        setDisplay(nextText);  
+
+        numberA = numberA.toString().slice(0,-1);
+        numberA = Number(numberA);
+        nextTextA = '';
+        getTextA = '';
+        setA(numberA);
+    } else {
+        nextText = nextText.slice(0, -1);
+        getText = '';
+        if(!nextText){
+            nextText = '0';
+        }
+        setDisplay(nextText);
+    }
+}
+
+// -- where it all comes together
+function settingThings () {
+
+    getNum.forEach(stuff => {
+
+        stuff.addEventListener("mouseup", (e) => {
+            let target = e.target;
+            switch (target.id) {
+                case "1":
+                    setNum(1);
+                    break;
+        
+                case "2":
+                    setNum(2);
+                    break;
+                    
+                case "3":
+                    setNum(3);
+                    break;
+    
+                case "4":
+                    setNum(4);
+                    break;
+
+                case "5":
+                    setNum(5);
+                    break;
+
+                case "6":
+                    setNum(6);
+                    break;
+
+                case "7":
+                    setNum(7);
+                    break;
+        
+                case "8":
+                    setNum(8);
+                    break;
+
+                case "9":
+                    setNum(9);
+                    break;
+
+                case "0":
+                    setNum(0);
+                    break;
+
+                case ".":
+                    setNum(".");
+                    break;
+
+                case "op-plus":
+                    accumulate();
+                    op = "+";
+                    setDisplay(op);
+                    shouldOverwrite = true;
+                    break;
+
+                case "op-minus":
+                    accumulate();  
+                    op = "-";
+                    setDisplay(op);
+                    shouldOverwrite = true;          
+                    break;
+
+                case "op-mult":
+                    accumulate();  
+                    op = "x";
+                    setDisplay(op);
+                    shouldOverwrite = true;          
+                    break;
+
+                case "op-divide":
+                    accumulate();  
+                    op = "/";
+                    setDisplay(op);
+                    shouldOverwrite = true;          
+                    break;
+            }        
+        
+        })
+    })
+
+    eql.addEventListener("click", () => {
+        setOperation()
     })
     
+    document.addEventListener("keydown", (e) => {
+
+        switch (e.key) {
+            case "1":
+                setNum(1);
+                break;
+    
+            case "2":
+                setNum(2);
+                break;
+                
+            case "3":
+                setNum(3);
+                break;
+
+            case "4":
+                setNum(4);
+                break;
+
+            case "5":
+                setNum(5);
+                break;
+
+            case "6":
+                setNum(6);
+                break;
+
+            case "7":
+                setNum(7);
+                break;
+    
+            case "8":
+                setNum(8);
+                break;
+
+            case "9":
+                setNum(9);
+                break;
+
+            case "0":
+                setNum(0);
+                break;
+
+            case ".":
+                setNum(".");
+                break;
+
+            case "+":
+                accumulate();
+                op = "+";
+                setDisplay(op);
+                shouldOverwrite = true;
+                break;
+
+            case "-":
+                accumulate();  
+                op = "-";
+                setDisplay(op);
+                shouldOverwrite = true;          
+                break;
+
+            case "*":
+                accumulate();  
+                op = "x";
+                setDisplay(op);
+                shouldOverwrite = true;          
+                break;
+
+            case "/":
+                accumulate();  
+                op = "/";
+                setDisplay(op);
+                shouldOverwrite = true;          
+                break;
+
+            case ("=" && "Enter"):
+                setOperation();
+
+            case "Backspace":
+                backSpace();
+        }
+    })
+
+    clearBtn.addEventListener("click", () => {
+        clear();
+    })
+    
+    backSpcae.addEventListener("mouseup", () => {
+        backSpace()
+    })
 
 }
 
 settingThings();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///----------------------
-// getNum.addEventListener("mouseup", (e) => {
-//     let target = e.target;
-//     switch (target.id) {
-//         case "1":
-//             if(first!=undefined){
-//                 second = 1;
-//                 setDisplay(second);
-//             } else{
-//                 first = 1;
-//                 setDisplay(first);
-//             }
-//             console.log(first);
-//             console.log(second)
-//             break;
-
-//         case "2":
-//             if(first!=undefined){
-//                 second = 2;
-//                 setDisplay(second);
-//             } else{
-//                 first = 2;
-//                 setDisplay(first);
-//             }
-//             console.log(first);
-//             console.log(second)
-//             break;
-
-//         case "3":
-//             if(first!=undefined){
-//                 second = 3;
-//                 setDisplay(second);
-//             } else{
-//                 first = 3;
-//                 setDisplay(first);
-//             }
-//             console.log(first);
-//             console.log(second)
-//             break;
-
-//         case "op-plus":
-//             op = "+";
-//             setDisplay(op);
-//             break;
-//         case "op-minus":
-//             op = "-";
-//             setDisplay(op);            
-//             break;
-//     }
-// })
