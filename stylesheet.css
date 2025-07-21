@@ -43,10 +43,12 @@ button {
     border-radius: 0px;
     border: none;
     background-color: white;
+    transition: background-color 0.5s ease;
 }
 
 .display {
     display: flex;
+    border-radius: 20px;
     width: 500px;
     max-width: 500px;
     height: 50px;

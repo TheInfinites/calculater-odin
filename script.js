@@ -42,7 +42,7 @@ function operator (a, op, b) {
         case "-":
             test = subtract(a, b);
             break;
-        case "x":
+        case "*":
             test = muliply(a, b);
             break;
         case "/":
@@ -254,6 +254,45 @@ function backSpace () {
     }
 }
 
+
+function keyFind (e, item) {
+    let arr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."];
+    let sp = ["/", "*", "+", "-"];
+
+    for (let i = 0; i < sp.length; i++){
+        if(e == sp[i]){
+            accumulate();
+            op = sp[i];
+            setDisplay(op);
+            shouldOverwrite = true;
+        }
+    }
+
+    for (let i = 0; i < arr.length; i++){
+
+        if(e == arr[i]){
+            setNum(arr[i])
+        }
+
+        // if(e == arr[i] && item.id == (arr[i])){
+        //     item.style.backgroundColor = "black";
+        // }
+    }
+
+    if (e == "="){
+        setOperation();
+    }
+
+    if (e == "Backspace"){
+        backSpace();
+    }
+
+    if (e == "c"){
+        clear();
+    }
+
+}
+
 // -- where it all comes together
 function settingThings () {
 
@@ -322,7 +361,7 @@ function settingThings () {
 
                 case "op-mult":
                     accumulate();  
-                    op = "x";
+                    op = "*";
                     setDisplay(op);
                     shouldOverwrite = true;          
                     break;
@@ -344,87 +383,92 @@ function settingThings () {
     
     document.addEventListener("keydown", (e) => {
 
-        switch (e.key) {
-            case "1":
-                setNum(1);
-                break;
+        // switch (e.key) {
+        //     case "1":
+        //         setNum(1);
+        //         break;
     
-            case "2":
-                setNum(2);
-                break;
+        //     case "2":
+        //         setNum(2);
+        //         break;
                 
-            case "3":
-                setNum(3);
-                break;
+        //     case "3":
+        //         setNum(3);
+        //         break;
 
-            case "4":
-                setNum(4);
-                break;
+        //     case "4":
+        //         setNum(4);
+        //         break;
 
-            case "5":
-                setNum(5);
-                break;
+        //     case "5":
+        //         setNum(5);
+        //         break;
 
-            case "6":
-                setNum(6);
-                break;
+        //     case "6":
+        //         setNum(6);
+        //         break;
 
-            case "7":
-                setNum(7);
-                break;
+        //     case "7":
+        //         setNum(7);
+        //         break;
     
-            case "8":
-                setNum(8);
-                break;
+        //     case "8":
+        //         setNum(8);
+        //         break;
 
-            case "9":
-                setNum(9);
-                break;
+        //     case "9":
+        //         setNum(9);
+        //         break;
 
-            case "0":
-                setNum(0);
-                break;
+        //     case "0":
+        //         setNum(0);
+        //         break;
 
-            case ".":
-                setNum(".");
-                break;
+        //     case ".":
+        //         setNum(".");
+        //         break;
 
-            case "+":
-                accumulate();
-                op = "+";
-                setDisplay(op);
-                shouldOverwrite = true;
-                break;
+        //     case "+":
+        //         accumulate();
+        //         op = "+";
+        //         setDisplay(op);
+        //         shouldOverwrite = true;
+        //         break;
 
-            case "-":
-                accumulate();  
-                op = "-";
-                setDisplay(op);
-                shouldOverwrite = true;          
-                break;
+        //     case "-":
+        //         accumulate();  
+        //         op = "-";
+        //         setDisplay(op);
+        //         shouldOverwrite = true;          
+        //         break;
 
-            case "*":
-                accumulate();  
-                op = "x";
-                setDisplay(op);
-                shouldOverwrite = true;          
-                break;
+        //     case "*":
+        //         accumulate();  
+        //         op = "*";
+        //         setDisplay(op);
+        //         shouldOverwrite = true;          
+        //         break;
 
-            case "/":
-                accumulate();  
-                op = "/";
-                setDisplay(op);
-                shouldOverwrite = true;          
-                break;
+        //     case "/":
+        //         accumulate();  
+        //         op = "/";
+        //         setDisplay(op);
+        //         shouldOverwrite = true;          
+        //         break;
 
-            case ("="):
-                setOperation();
-                break;
+        //     case ("="):
+        //         setOperation();
+        //         break;
 
-            case "Backspace":
-                backSpace();
-                break;
-        }
+        //     case "Backspace":
+        //         backSpace();
+        //         break;
+        // }
+
+        let key = e.key;
+        keyFind(key)
+
+
     })
 
     clearBtn.addEventListener("click", () => {
@@ -435,6 +479,35 @@ function settingThings () {
         backSpace()
     })
 
+
+    // -- 
+    // getNum.forEach(item => {
+    //     item.addEventListener("mousedown", (e) => {
+            
+    //         let target = e.target;
+
+    //         if(target.matches('button')){
+    //             target.style.backgroundColor = "black"
+    //             target.style.color = "white"
+    //         }
+
+    //     })
+
+    //     item.addEventListener("mouseup", (e) => {
+            
+    //         let target = e.target;
+
+    //         if(target.matches('button')){
+    //             target.style.backgroundColor = "white"
+    //             target.style.color = "black"
+    //         }
+
+    //     })
+    // })
+
 }
+
+
+
 
 settingThings();
