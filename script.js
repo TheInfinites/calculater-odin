@@ -29,6 +29,7 @@ const display = document.querySelector(".display");
 const eql = document.querySelector("#equal");
 const clearBtn = document.querySelector("#clear");
 const backSpcae = document.querySelector("#backspace");
+const allButtons = document.querySelectorAll("button");
 
 
 let test;
@@ -169,6 +170,7 @@ function setDisplay (a) {
 
 // -- the operation function
 function setOperation () {
+
     operator(numberA, op, numberB);
     display.textContent = `${test}`;
     // getText = test;
@@ -259,12 +261,14 @@ function keyFind (e, item) {
     let arr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."];
     let sp = ["/", "*", "+", "-"];
 
+
     for (let i = 0; i < sp.length; i++){
         if(e == sp[i]){
             accumulate();
             op = sp[i];
             setDisplay(op);
             shouldOverwrite = true;
+            break;
         }
     }
 
@@ -272,15 +276,14 @@ function keyFind (e, item) {
 
         if(e == arr[i]){
             setNum(arr[i])
+            break;
         }
-
-        // if(e == arr[i] && item.id == (arr[i])){
-        //     item.style.backgroundColor = "black";
-        // }
     }
 
     if (e == "="){
-        setOperation();
+        if (op == "/" && numberB != 0){
+            setOperation();
+        };
     }
 
     if (e == "Backspace"){
@@ -291,7 +294,76 @@ function keyFind (e, item) {
         clear();
     }
 
+};
+
+
+function keyColorChange (e, item) {
+    let arr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."];
+
+    if (e.type == "keydown"){
+
+        for (let i = 0; i < arr.length; i++){
+    
+            if(e.key == arr[i] && item.id == (arr[i])){ 
+                item.style.backgroundColor = "black";
+                item.style.color = "white";
+            } 
+            
+        }
+        if (e.key == "Backspace" && item.id == "backspace"){
+            item.style.backgroundColor = "black";
+            item.style.color = "white";    
+        }
+        if (e.key == "c" && item.id == "clear"){
+            item.style.backgroundColor = "black";
+            item.style.color = "white";    
+        }
+        if (e.key == "=" && item.id == "equal"){
+            item.style.backgroundColor = "black";
+            item.style.color = "white";    
+        }
+        if (e.key == "*" && item.id == "op-mult"){
+            item.style.backgroundColor = "black";
+            item.style.color = "white";    
+        }
+        if (e.key == "/" && item.id == "op-divide"){
+            item.style.backgroundColor = "black";
+            item.style.color = "white";    
+        }
+    }
+
+    if (e.type == "keyup"){
+
+        for (let i = 0; i < arr.length; i++){
+
+            if(e.key == arr[i] && item.id == (arr[i])){   
+                item.style.backgroundColor = "white";
+                item.style.color = "black";
+            }
+        }
+        if (e.key == "Backspace" && item.id == "backspace"){
+            item.style.backgroundColor = "white";
+            item.style.color = "black";    
+        }
+        if (e.key == "c" && item.id == "clear"){
+            item.style.backgroundColor = "white";
+            item.style.color = "black";    
+        }
+        if (e.key == "=" && item.id == "equal"){
+            item.style.backgroundColor = "white";
+            item.style.color = "black";    
+        }
+        if (e.key == "*" && item.id == "op-mult"){
+            item.style.backgroundColor = "white";
+            item.style.color = "black";    
+        }
+        if (e.key == "/" && item.id == "op-divide"){
+            item.style.backgroundColor = "white";
+            item.style.color = "black";    
+        }                
+    }
 }
+
 
 // -- where it all comes together
 function settingThings () {
@@ -375,139 +447,71 @@ function settingThings () {
             }        
         
         })
-    })
+    });
 
     eql.addEventListener("click", () => {
-        setOperation()
-    })
+        if(op == "/" && numberB != 0){
+            setOperation();
+        }
+    });
     
     document.addEventListener("keydown", (e) => {
-
-        // switch (e.key) {
-        //     case "1":
-        //         setNum(1);
-        //         break;
-    
-        //     case "2":
-        //         setNum(2);
-        //         break;
-                
-        //     case "3":
-        //         setNum(3);
-        //         break;
-
-        //     case "4":
-        //         setNum(4);
-        //         break;
-
-        //     case "5":
-        //         setNum(5);
-        //         break;
-
-        //     case "6":
-        //         setNum(6);
-        //         break;
-
-        //     case "7":
-        //         setNum(7);
-        //         break;
-    
-        //     case "8":
-        //         setNum(8);
-        //         break;
-
-        //     case "9":
-        //         setNum(9);
-        //         break;
-
-        //     case "0":
-        //         setNum(0);
-        //         break;
-
-        //     case ".":
-        //         setNum(".");
-        //         break;
-
-        //     case "+":
-        //         accumulate();
-        //         op = "+";
-        //         setDisplay(op);
-        //         shouldOverwrite = true;
-        //         break;
-
-        //     case "-":
-        //         accumulate();  
-        //         op = "-";
-        //         setDisplay(op);
-        //         shouldOverwrite = true;          
-        //         break;
-
-        //     case "*":
-        //         accumulate();  
-        //         op = "*";
-        //         setDisplay(op);
-        //         shouldOverwrite = true;          
-        //         break;
-
-        //     case "/":
-        //         accumulate();  
-        //         op = "/";
-        //         setDisplay(op);
-        //         shouldOverwrite = true;          
-        //         break;
-
-        //     case ("="):
-        //         setOperation();
-        //         break;
-
-        //     case "Backspace":
-        //         backSpace();
-        //         break;
-        // }
-
+        
+    if(e.key == "/"){
+        e.preventDefault();
+    }
+        
         let key = e.key;
-        keyFind(key)
-
-
-    })
+        // console.log(key)
+        keyFind(key);
+    });
 
     clearBtn.addEventListener("click", () => {
         clear();
-    })
+    });
     
     backSpcae.addEventListener("mouseup", () => {
-        backSpace()
-    })
+        backSpace();
+    });
 
 
-    // -- 
-    // getNum.forEach(item => {
-    //     item.addEventListener("mousedown", (e) => {
+    // -- style changes
+    getNum.forEach(item => {
+        item.addEventListener("mousedown", (e) => {
             
-    //         let target = e.target;
+            let target = e.target;
 
-    //         if(target.matches('button')){
-    //             target.style.backgroundColor = "black"
-    //             target.style.color = "white"
-    //         }
+            if(target.matches('button')){
+                target.style.backgroundColor = "black"
+                target.style.color = "white"
+            };
 
-    //     })
+        });
 
-    //     item.addEventListener("mouseup", (e) => {
+        item.addEventListener("mouseup", (e) => {
             
-    //         let target = e.target;
+            let target = e.target;
 
-    //         if(target.matches('button')){
-    //             target.style.backgroundColor = "white"
-    //             target.style.color = "black"
-    //         }
+            if(target.matches('button')){
+                target.style.backgroundColor = "white"
+                target.style.color = "black"
+            };
 
-    //     })
-    // })
+        });
+    });
 
+    // allButtons.forEach(item => {
+
+    //     document.addEventListener("keydown", (e) => {
+    //         keyColorChange(e, item);
+    //     });
+
+    //     document.addEventListener("keyup", (e) => {
+    //         keyColorChange(e, item);
+    //     });
+    // });
 }
 
 
 
-
-settingThings();
+settingThings()

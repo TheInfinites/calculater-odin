@@ -43,7 +43,7 @@ button {
     border-radius: 0px;
     border: none;
     background-color: white;
-    transition: background-color 0.5s ease;
+    /* transition: background-color 1s ease; */
 }
 
 .display {
